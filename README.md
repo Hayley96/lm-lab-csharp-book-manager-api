@@ -3,7 +3,7 @@
 ## Introduction
 The application is a Minimalist Book Manager API with synchronous API endpoints.
 
-The application consists of the following structure:
+The project/solution consists of the following structure:
 
 * BookManagerAPI
 	* Contains the application files
