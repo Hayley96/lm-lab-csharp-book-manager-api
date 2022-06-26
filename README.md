@@ -3,12 +3,19 @@
 ## Introduction
 The application is a Minimalist Book Manager API with synchronous API endpoints.
 
+The application consists of the following structure:
+
+* BookManagerAPI
+	* Contains the application files
+* BookManagerApi.Tests
+	* Contains the tests for the application
+
 The API features are:
-- Get All Books - retrieves a list of all books
-- Get a Book by ID - retrieve a single book via the book id
-- Add a Book - add a book
-- Update a Book - modify an existing book via the book id
-- Delete a Book - delete a book via the book id
+* Get All Books - retrieves a list of all books
+* Get a Book by ID - retrieve a single book via the book id
+* Add a Book - add a book
+* Update a Book - modify an existing book via the book id
+* Delete a Book - delete a book via the book id
 
 ### Pre-Requisites
 - C# / .NET 6
