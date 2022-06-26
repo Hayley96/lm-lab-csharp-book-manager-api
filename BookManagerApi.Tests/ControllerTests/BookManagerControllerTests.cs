@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Web.Http;
 using BookManagerApi.Controllers;
 using BookManagerApi.Models;
 using BookManagerApi.Services;
@@ -100,14 +102,36 @@ public class BookManagerControllerTests
     [Test]
     public void DeleteBookById_Deletes_The_Matching_Book()
     {
-        //Arrange
         long existingBookId = 3;
         _mockBookManagementService!.Setup(b => b.BookExists(existingBookId)).Returns(true);
 
-        //Act
         var result = _controller!.DeleteBookById(existingBookId);
 
-        //Assert - method returns the book that was deleted
         result.Should().BeOfType(typeof(ActionResult<Book>));
+    }
+
+    [Test]
+    public void Result_Should_Return_NotFound_With_Custom_Message_When_Book_With_Id_Not_Found()
+    {
+        long existingBookId = 3;
+        _mockBookManagementService!.Setup(b => b.BookExists(existingBookId)).Returns(false);
+
+        var result = BookManagerController.Result(HttpStatusCode.NotFound, $"Book with id {existingBookId} not found in our books...Please try again") as ContentResult;
+
+        Assert.NotNull(result);
+        Assert.AreEqual($"Status Code: 404 NotFound: Book with id {existingBookId} not found in our books...Please try again", result!.Content);
+    }
+
+    [Test]
+    public void Result_Should_Return_BadRequest_With_Custom_Message_When_User_Wants_To_Add_A_Book_With_An_Id_That_Already_Exists()
+    {
+        new Book() { Id = 1, Title = "Book One", Description = "This is the description for Book One", Author = "Person One", Genre = Genre.Education };
+        long newbookid = 1;
+        _mockBookManagementService!.Setup(b => b.BookExists(newbookid)).Returns(true);
+
+        var result = BookManagerController.Result(HttpStatusCode.BadRequest, $"A Book with id {newbookid} already exists...Please try again") as ContentResult;
+
+        Assert.NotNull(result);
+        Assert.AreEqual($"Status Code: 400 BadRequest: A Book with id {newbookid} already exists...Please try again", result!.Content);
     }
 }

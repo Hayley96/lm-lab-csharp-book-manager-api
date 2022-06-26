@@ -58,7 +58,7 @@ namespace BookManagerApi.Controllers
         public ActionResult<Book> DeleteBookById(long id) =>
             _bookManagementService.Delete(id);
 
-        private static ActionResult Result(HttpStatusCode statusCode, string reason) => new ContentResult
+        public static ActionResult Result(HttpStatusCode statusCode, string reason) => new ContentResult
         {
             StatusCode = (int)statusCode,
             Content = $"Status Code: {(int)statusCode} {statusCode}: {reason}",
