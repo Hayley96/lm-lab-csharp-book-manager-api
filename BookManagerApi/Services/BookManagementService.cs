@@ -1,4 +1,6 @@
 ﻿using BookManagerApi.Models;
+using System.Net;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookManagerApi.Services
 {
@@ -14,7 +16,7 @@ namespace BookManagerApi.Services
 
         public List<Book> GetAllBooks()
         {
-            var books = _context.Books.ToList();
+            var books = _context.Books!.ToList();
             return books;
         }
 
@@ -38,16 +40,23 @@ namespace BookManagerApi.Services
             return book;
         }
 
+        public Book Delete(long id)
+        {
+            var existingBookFound = FindBookById(id);
+            _context.Remove(_context.Books!.Single(b => b.Id.Equals(existingBookFound.Id)));
+            _context.SaveChanges();
+            return existingBookFound;
+        }
+
         public Book FindBookById(long id)
         {
-            var book = _context.Books.Find(id);
-            return book;
+            var book = _context.Books!.Find(id);
+            return book!;
         }
 
         public bool BookExists(long id)
         {
-            return _context.Books.Any(b => b.Id == id);
+            return _context.Books!.Any(b => b.Id == id);
         }
     }
 }
-

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BookManagerApi.Models;
 using BookManagerApi.Services;
+using System.Net;
 
 namespace BookManagerApi.Controllers
 {
@@ -27,7 +28,9 @@ namespace BookManagerApi.Controllers
         public ActionResult<Book> GetBookById(long id)
         {
             var book = _bookManagementService.FindBookById(id);
-            return book;
+            if(book != null)
+                return book;
+            return Result(HttpStatusCode.NotFound, $"Book with id {id} not found in our books...Please try again");
         }
 
         // PUT: api/v1/book/5
@@ -45,7 +48,21 @@ namespace BookManagerApi.Controllers
         public ActionResult<Book> AddBook(Book book)
         {
             _bookManagementService.Create(book);
+            if (_bookManagementService.BookExists(book.Id))
+                return Result(HttpStatusCode.NotFound, $"A Book with id {book.Id} already exists...Please try again");
             return CreatedAtAction(nameof(GetBookById), new { id = book.Id }, book);
         }
+
+        // DELETE: api/v1/book/5
+        [HttpDelete("{id}")]
+        public ActionResult<Book> DeleteBookById(long id) =>
+            _bookManagementService.Delete(id);
+
+        private static ActionResult Result(HttpStatusCode statusCode, string reason) => new ContentResult
+        {
+            StatusCode = (int)statusCode,
+            Content = $"Status Code: {(int)statusCode} {statusCode}: {reason}",
+            ContentType = "text/plain",
+        };
     }
 }
