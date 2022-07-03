@@ -34,9 +34,11 @@ The application has 3 environment profiles:
 The connection strings for both MySQL and MS SQL Server are currently defined in Environment variables:
 
 - MySQL: env variable name = CUSTOMCONNSTR_MyContextDb
+	Context setup for MySQL is: [MySqlDbContext.cs](./BookManagerApi/Data/MySqlDbContext.cs)
 ![Alt text](https://github.com/Hayley96/lm-lab-csharp-book-manager-api/blob/main/BookManagerApi/resources/MySQLConnectionString.png?raw=true "MySQL Connection Setup")
 	
 - MS SQL Server: env variable name = CUSTOMCONNSTR_MyContextDbSQLServer
+	Context setup for MS SQL Server is: [MsSqlServerDbContext.cs](./BookManagerApi/Data/MsSqlServerDbContext.cs)
 ![Alt text](https://github.com/Hayley96/lm-lab-csharp-book-manager-api/blob/main/BookManagerApi/resources/MsSQLServerConnectionString.png?raw=true "MSSQL Server Connection Setup")
 
 ### Application Features
