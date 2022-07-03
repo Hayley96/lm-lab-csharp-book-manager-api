@@ -41,8 +41,6 @@ The connection strings for both MySQL and MS SQL Server are currently defined in
 	- Context setup for MS SQL Server is: [MsSqlServerDbContext.cs](./BookManagerApi/Data/MsSqlServerDbContext.cs)
 ![Alt text](https://github.com/Hayley96/lm-lab-csharp-book-manager-api/blob/main/BookManagerApi/resources/MsSQLServerConnectionString.png?raw=true "MSSQL Server Connection Setup")
 
-#### Add new model to application
-//TODO
 
 ### Application Features
 The API features are:
@@ -75,8 +73,8 @@ The API features are:
 - Fork this repo to your Github and then clone the forked version of this repo.
 - Restore dependencies:
 	- Open up project in Visual Studio
-	- Open up a terminal and navigate to the root folder of the project /BookManagerApi
-	- use `dotnet restore`
+	- Open up a terminal and navigate to the root folder of the main application directory [BookManagerApi](./BookManagerApi):
+	 - run: `dotnet restore`
 
 ### Main Entry Point
 - The Main Entry Point for the application is: [Program.cs](./BookManagerApi/Program.cs)
