@@ -10,6 +10,7 @@ namespace BookManagerApi.Models
         Fantasy,
         Fiction,
         Education,
+        Memoir,
     }
 }
 

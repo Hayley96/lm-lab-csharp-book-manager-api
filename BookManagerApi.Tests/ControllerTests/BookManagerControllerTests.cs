@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Web.Http;
 using BookManagerApi.Controllers;
 using BookManagerApi.Models;
 using BookManagerApi.Services;
@@ -63,7 +61,7 @@ public class BookManagerControllerTests
         Book existingBookFound = GetTestBooks()
             .FirstOrDefault(b => b.Id.Equals(existingBookId))!;
 
-        var bookUpdates = new Book() { Id = 3, Title = "Book Three", Description = "I am updating this for Book Three", Author = "Person Three", Genre = Genre.Education };
+        var bookUpdates = new Book() { Id = 3, Title = "Book Three", Description = "I am updating this for Book Three", Author = GetTestAuthors()[2], Genre = Genre.Education };
 
         _mockBookManagementService!.Setup(b => b.FindBookById(existingBookId)).Returns(existingBookFound!);
 
@@ -78,7 +76,8 @@ public class BookManagerControllerTests
     public void AddBook_Creates_A_Book()
     {
         //Arrange
-        var newBook = new Book() { Id = 4, Title = "Book Four", Description = "This is the description for Book Four", Author = "Person Four", Genre = Genre.Education };
+        var newBook = new Book() { Id = 4, Title = "Book Four", Description = "This is the description for Book Four", Author = 
+            new Author() { Id = 4, Name = "Author Four" }, Genre = Genre.Education };
 
         _mockBookManagementService!.Setup(b => b.Create(newBook)).Returns(newBook);
 
@@ -93,45 +92,30 @@ public class BookManagerControllerTests
     {
         return new List<Book>
         {
-            new Book() { Id = 1, Title = "Book One", Description = "This is the description for Book One", Author = "Person One", Genre = Genre.Education },
-            new Book() { Id = 2, Title = "Book Two", Description = "This is the description for Book Two", Author = "Person Two", Genre = Genre.Fantasy },
-            new Book() { Id = 3, Title = "Book Three", Description = "This is the description for Book Three", Author = "Person Three", Genre = Genre.Thriller },
+            new Book() { Id = 1, Title = "Book One", Description = "This is the description for Book One", Author = GetTestAuthors()[0], Genre = Genre.Education },
+            new Book() { Id = 2, Title = "Book Two", Description = "This is the description for Book Two", Author = GetTestAuthors()[1], Genre = Genre.Fantasy },
+            new Book() { Id = 3, Title = "Book Three", Description = "This is the description for Book Three", Author = GetTestAuthors()[2], Genre = Genre.Thriller },
+        };
+    }
+
+    private static List<Author> GetTestAuthors()
+    {
+        return new List<Author>
+        {
+            new Author() {Id = 1, Name = "Author One"},
+            new Author() {Id = 2, Name = "Author Two"},
+            new Author() {Id = 3, Name = "Author Three"}
         };
     }
 
     [Test]
     public void DeleteBookById_Deletes_The_Matching_Book()
     {
-        long existingBookId = 3;
-        _mockBookManagementService!.Setup(b => b.BookExists(existingBookId)).Returns(true);
+        var testBookFound = GetTestBooks().FirstOrDefault();
+        _mockBookManagementService!.Setup(b => b.FindBookById(1)).Returns(testBookFound!);
 
-        var result = _controller!.DeleteBookById(existingBookId);
+        var result = _controller!.DeleteBookById(1);
 
         result.Should().BeOfType(typeof(ActionResult<Book>));
-    }
-
-    [Test]
-    public void Result_Should_Return_NotFound_With_Custom_Message_When_Book_With_Id_Not_Found()
-    {
-        long existingBookId = 3;
-        _mockBookManagementService!.Setup(b => b.BookExists(existingBookId)).Returns(false);
-
-        var result = BookManagerController.Result(HttpStatusCode.NotFound, $"Book with id {existingBookId} not found in our books...Please try again") as ContentResult;
-
-        Assert.NotNull(result);
-        Assert.AreEqual($"Status Code: 404 NotFound: Book with id {existingBookId} not found in our books...Please try again", result!.Content);
-    }
-
-    [Test]
-    public void Result_Should_Return_BadRequest_With_Custom_Message_When_User_Wants_To_Add_A_Book_With_An_Id_That_Already_Exists()
-    {
-        new Book() { Id = 1, Title = "Book One", Description = "This is the description for Book One", Author = "Person One", Genre = Genre.Education };
-        long newbookid = 1;
-        _mockBookManagementService!.Setup(b => b.BookExists(newbookid)).Returns(true);
-
-        var result = BookManagerController.Result(HttpStatusCode.BadRequest, $"A Book with id {newbookid} already exists...Please try again") as ContentResult;
-
-        Assert.NotNull(result);
-        Assert.AreEqual($"Status Code: 400 BadRequest: A Book with id {newbookid} already exists...Please try again", result!.Content);
     }
 }

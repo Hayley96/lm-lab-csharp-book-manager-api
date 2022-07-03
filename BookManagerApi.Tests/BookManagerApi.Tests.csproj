@@ -27,7 +27,4 @@
     <None Remove="Moq" />
     <None Remove="FluentAssertions.AspNetCore.Mvc" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ControllerTests\" />
-  </ItemGroup>
 </Project>

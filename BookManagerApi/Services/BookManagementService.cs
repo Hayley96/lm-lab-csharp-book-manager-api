@@ -1,14 +1,16 @@
 ﻿using BookManagerApi.Models;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using BookManagerApi.Data;
 
 namespace BookManagerApi.Services
 {
-	public class BookManagementService : IBookManagementService
+    public class BookManagementService : IBookManagementService
 	{
-        private readonly BookContext _context;
+        private readonly ModelsContext _context;
 
-        public BookManagementService(BookContext context)
+        public BookManagementService(ModelsContext context)
         {
             _context = context;
         }
@@ -16,7 +18,9 @@ namespace BookManagerApi.Services
 
         public List<Book> GetAllBooks()
         {
-            var books = _context.Books!.ToList();
+            var books = _context.Books!
+                        .Include(b => b.Author)
+                        .ToList();
             return books;
         }
 
