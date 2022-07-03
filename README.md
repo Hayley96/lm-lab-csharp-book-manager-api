@@ -58,6 +58,13 @@ The API features are:
 
 ### Technologies & Dependencies
 - ASP.NET Core MVC 6 (Web API Project)
+- MS Entity Framework Core 6
+	- In Memory
+	- SQL Server
+	- MySSQL
+	- Design
+- MS Extensions
+- Pomelo
 - NUnit testing framework
 - Moq
 
