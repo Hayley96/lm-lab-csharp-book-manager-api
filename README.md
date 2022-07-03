@@ -3,6 +3,7 @@
 ## Introduction
 The application is a Minimalist Book Manager API with synchronous API endpoints.
 
+### Project Structure
 The project/solution consists of the following structure:
 
 * BookManagerAPI
@@ -10,12 +11,42 @@ The project/solution consists of the following structure:
 * BookManagerApi.Tests
 	* Contains the tests for the application
 
+### Application Components
+The application contains two models with the following properties:
+
+* Book
+	* ID
+	* Title
+	* Description
+	* Author
+	* Genre
+
+* Author
+	* ID
+	* Name
+
+The application has 3 environment profiles:
+
+- Testing: - configured to use In-Memory database
+- Development: - configured to use MySQL database
+- Production: - configured to use MS SQL Server database
+
+The connection strings for both MySQL and MS SQL Server are currently defined in Environment variables:
+
+- MySQL: env variable name = CUSTOMCONNSTR_MyContextDb
+	
+- MS SQL Server: env variable name = CUSTOMCONNSTR_MyContextDbSQLServer
+
+### Application Features
 The API features are:
 * Get All Books - retrieves a list of all books
 * Get a Book by ID - retrieve a single book via the book id
 * Add a Book - add a book
 * Update a Book - modify an existing book via the book id
 * Delete a Book - delete a book via the book id
+* Get All Authors - return a list of authors
+* Get Author by ID - return a single author via the author id
+* Add author - add a author
 
 ### Pre-Requisites
 - C# / .NET 6
